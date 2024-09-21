@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Card,
   CardContent,
@@ -5,16 +7,47 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import React from "react";
-import { getImages, getProjects, getTechStacts } from "./_actions/GetStats";
+import React, { useEffect, useState } from "react";
 import { formatNumber } from "@/lib/utils";
+import axios from "axios";
 
-const Dashboard = async () => {
-  const [projectCount, techStacksCount, imagesCount] = await Promise.all([
-    getProjects(),
-    getTechStacts(),
-    getImages(),
-  ]);
+const Dashboard = () => {
+  const [stats, setStats] = useState({
+    projectCount: 0,
+    techStacksCount: 0,
+    imagesCount: 0,
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await axios.get("/api/stats");
+        console.log("API Response:", response.data); // Log response
+
+        if (response.data.success) {
+          setStats({
+            projectCount: response.data.stats.projects || 0,
+            techStacksCount: response.data.stats.techStacks || 0,
+            imagesCount: response.data.stats.images || 0,
+          });
+        } else {
+          throw new Error(response.data.message);
+        }
+      } catch (error: any) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, []);
+
+  if (loading) return <p>Loading stats...</p>;
+  if (error) return <p>Error: {error}</p>;
+
   return (
     <div className="container flex flex-col h-screen">
       <div className="text-3xl">Welcome to your dashboard!</div>
@@ -22,29 +55,29 @@ const Dashboard = async () => {
         <DashboardCard
           title="Projects"
           body={"000 Found"}
-          subtitle={`${formatNumber(projectCount)} Projects`}
+          subtitle={`${formatNumber(stats.projectCount)} Projects`}
         />
-        {/* <DashboardCard title="" subtitle={""} body={""} /> */}
         <DashboardCard
           title="Images"
-          subtitle={`${formatNumber(imagesCount)} Images`}
+          subtitle={`${formatNumber(stats.imagesCount)} Images`}
           body={"000 Found"}
         />
         <DashboardCard
           title="Tech Stacks"
           body={"000 Found"}
-          subtitle={`${formatNumber(techStacksCount)} Languages`}
+          subtitle={`${formatNumber(stats.techStacksCount)} Languages`}
         />
       </div>
     </div>
   );
 };
+
 interface DashboardCardProps {
   title: string;
   subtitle: string;
   body: string;
 }
-export default Dashboard;
+
 function DashboardCard({ title, subtitle, body }: DashboardCardProps) {
   return (
     <Card className="w-full bg-black-200">
@@ -58,3 +91,5 @@ function DashboardCard({ title, subtitle, body }: DashboardCardProps) {
     </Card>
   );
 }
+
+export default Dashboard;

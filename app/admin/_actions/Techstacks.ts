@@ -21,7 +21,7 @@ const AddFormSchema = z.object({
 });
 const editFormSchema = AddFormSchema.extend({
   image: imageSchema.optional(),
-})
+});
 export async function addTechStacks(prevState: unknown, formData: FormData) {
   const result = AddFormSchema.safeParse(
     Object.fromEntries(formData.entries())

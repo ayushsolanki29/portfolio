@@ -7,7 +7,6 @@ import {
   LogOut,
   X,
   Menu,
-  ProjectorIcon,
   FolderGit,
   ImageDown,
   Layers,

@@ -1,7 +1,6 @@
 "use server";
 import { connectToDatabase } from "@/lib/db";
 
-import { redirect } from "next/navigation";
 import Contact from "@/models/Contact";
 import { z } from "zod";
 const contactFormSchema = z.object({
@@ -51,3 +50,4 @@ export async function submitContactForm(
     return { error: "Failed to submit the contact form. Please try again." };
   }
 }
+npm 

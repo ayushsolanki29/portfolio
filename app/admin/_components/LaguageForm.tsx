@@ -2,29 +2,59 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useFormState } from "react-dom";
-import { addTechStacks, updateTechstacks } from "../_actions/Techstacks";
-import Image from "next/image";
+import axios from "axios";
+import { useState } from "react";
+import toast from "react-hot-toast";
+const LanguageForm = () => {
+  const [name, setName] = useState("");
+  
+  const [role, setRole] = useState("");
+  const [image, setImage] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
 
-const LanguageForm = ({ language }: { language?: any | null }) => {
-  const [error, action] = useFormState(
-    language != null
-      ? updateTechstacks.bind(null, language._id)
-      : addTechStacks,
-    {}
-  );
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("role", role);
+    if (image) {
+      formData.append("image", image);
+    }
+
+    try {
+      const response = await axios.post("/api/tech-stacks/add", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (response.data.success) {
+        toast.success("Tech stack added successfully!");
+        // Reset form fields
+        setName("");
+        setRole("");
+        setImage("" || null);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error: any) {
+      console.error("Error adding tech stack:", error);
+      toast.error("Error adding tech stack");
+    }
+  };
+
   return (
-    <form className="space-y-8" action={action}>
+    <form className="space-y-8" onSubmit={handleSubmit}>
       <div className="space-y-2">
         <Label htmlFor="title">Name</Label>
         <Input
           type="text"
           id="name"
           name="name"
-          defaultValue={language?.name}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           placeholder="Enter Language name"
         />
-        {error?.name && <div className="text-red-500">{error.name}</div>}
       </div>
       <div className="space-y-2">
         <Label htmlFor="title">Role</Label>
@@ -32,29 +62,25 @@ const LanguageForm = ({ language }: { language?: any | null }) => {
           type="text"
           id="role"
           name="role"
-          defaultValue={language?.role}
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
           placeholder="Enter Language role"
         />
-        {error?.role && <div className="text-red-500">{error.role}</div>}
       </div>
 
       <div className="space-y-2">
         <Label htmlFor="image">Image</Label>
-        <Input type="file" id="image" name="image" />
-        {error?.image && <div className="text-red-500">{error.image}</div>}
-        {language && (
-          <div className="flex gap-4">
-            <Image
-              src={language.image}
-              alt={language.name}
-              width="100"
-              height="100"
-            />
-          </div>
-        )}
+        <Input
+          type="file"
+          onChange={(e) => {
+            if (e.target.files) setImage(e.target.files[0]);
+          }}
+          id="image"
+          name="image"
+        />
       </div>
 
-      <Button>{language == null ? "Save Laguage" : "Update Laguage"}</Button>
+      <Button>{loading ? "Saving..." : "Save"} </Button>
     </form>
   );
 };

@@ -1,27 +1,56 @@
+"use client";
 import Footer from "@/components/Footer";
-
 import { FloatingNav } from "@/components/ui/floating-navbar";
 import { navItems } from "@/data";
-import React from "react";
-
-import { GitHubLogoIcon } from "@radix-ui/react-icons";
-import { Button } from "@/components/ui/button";
-import { FaChrome, FaHeadset } from "react-icons/fa6";
-import { getProjectsBySlug } from "@/app/_actions/projects";
-
+import React, { useEffect, useState } from "react";
 import Icons from "../_components/Icons";
 import ProjectImages from "../_components/ProjectImages";
 import { notFound } from "next/navigation";
 import TechStaks from "../_components/TechStaks";
 import Content from "../_components/content";
 import Buttons from "../_components/Buttons";
+import axios from "axios";
 
-const ProjectID = async ({ params }: { params: { project_id: string } }) => {
-  const getParam = params.project_id;
-  const project = await getProjectsBySlug(getParam);
-  if (!project) {
-    return notFound();
+const ProjectID = ({ params }: { params: { project_id: string } }) => {
+  const getParam = params.project_id; // Extract the project_id from params
+  const [project, setProject] = useState<any>(null); // State for storing project data
+  const [loading, setLoading] = useState(true); // State for loading status
+  const [error, setError] = useState<string | null>(null); // State for error handling
+
+  useEffect(() => {
+    const fetchProject = async () => {
+      try {
+        const response = await axios.get(
+          `/api/projects/getBySlug?slug=${getParam}`
+        ); // Adjust this URL based on your API
+        if (response.data.success) {
+          setProject(response.data.project);
+        } else {
+          throw new Error(response.data.message);
+        }
+      } catch (error: any) {
+        setError(error.message); // Capture error message
+        return notFound(); // Call notFound to handle the 404 response
+      } finally {
+        setLoading(false); // Stop loading
+      }
+    };
+
+    fetchProject();
+  }, [getParam]); // Dependency on getParam
+
+  if (loading) {
+    return <p>Loading...</p>; // Loading state
   }
+
+  if (error) {
+    return <p>Error: {error}</p>; // Display error message
+  }
+
+  if (!project) {
+    return notFound(); // If project is still null, return not found
+  }
+
   return (
     <div>
       <FloatingNav navItems={navItems} />
@@ -33,10 +62,8 @@ const ProjectID = async ({ params }: { params: { project_id: string } }) => {
         <ProjectImages images={project.images} />
         <div className="flex lg:flex-row lg:justify-between mt-7 mb-3 w-full flex-col gap-3 justify-center items-center">
           <Icons iconsList={project.techStacks} />
-
           <Buttons project={project} />
         </div>
-
         <div>
           <Content text={project.content} />
           <div className="my-6 w-full overflow-y-auto">

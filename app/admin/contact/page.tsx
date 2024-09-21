@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import PageHeader from "../_components/FileHeader";
 import parse from "html-react-parser";
 import {
@@ -18,18 +19,18 @@ import {
 import { Info, MoreVertical } from "lucide-react";
 import Link from "next/link";
 import { format } from "date-fns";
-import Contact from "@/models/Contact";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import axios from "axios";
 
 const ContactPage = () => {
   return (
     <div className="container flex flex-col h-screen">
       <div className="flex justify-start">
-        <PageHeader>Contact Sumbmissions</PageHeader>
+        <PageHeader>Contact Submissions</PageHeader>
       </div>
       <div className="mt-8">
         <ContactTable />
@@ -38,11 +39,27 @@ const ContactPage = () => {
   );
 };
 
-export default ContactPage;
+const ContactTable = () => {
+  const [contact, setContact] = useState<any[]>([]); // Define correct type
 
-async function ContactTable() {
-  const contact = await Contact.find({}).sort({ createdAt: "desc" });
-  if (contact.length === 0) return <p>No Contact Submission Found!!</p>;
+  useEffect(() => {
+    const fetchContact = async () => {
+      try {
+        const response = await axios.get("/api/contact/get");
+        if (response.data.success) {
+          setContact(response.data.contactData);
+        } else {
+          console.error("Error fetching contact:", response.data.message);
+        }
+      } catch (error: any) {
+        console.error("Error fetching contact:", error.message);
+      }
+    };
+
+    fetchContact();
+  }, []);
+
+  if (contact.length === 0) return <p>No Contact Submissions Found!!</p>;
 
   return (
     <Table>
@@ -79,7 +96,6 @@ async function ContactTable() {
                   : contactItem.message}
               </div>
             </TableCell>
-
             <TableCell>
               {format(new Date(contactItem.createdAt), "dd-MMM-yyyy hh:mm a")}
             </TableCell>
@@ -103,4 +119,6 @@ async function ContactTable() {
       </TableBody>
     </Table>
   );
-}
+};
+
+export default ContactPage;

@@ -23,7 +23,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { submitContactForm } from "@/app/_actions/contact";
+import axios from "axios";
 import toast from "react-hot-toast";
 
 // Define the Zod schema
@@ -31,15 +31,18 @@ const contactFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   email: z.string().email({ message: "Invalid email address" }),
   query: z.string().min(1, { message: "Please select a query" }),
-  message: z.string().min(1, { message: "Message is required" }),
+  message: z
+    .string()
+    .min(10, { message: "Message is atleast 10 Characters Long" })
+    .max(500, { message: "Max char limit is 500 characters" }),
   other: z.string().optional(),
 });
-
 type ContactForm = z.infer<typeof contactFormSchema>;
 
 const ContactForm = () => {
-  const [isLoading, setIsLoading] = useState(false); // Loading state
-  const [isShow, setIsShow] = useState(false); // Show state
+  const [isLoading, setIsLoading] = useState(false);
+  const [isShow, setIsShow] = useState(false);
+
   const form = useForm<ContactForm>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: {
@@ -54,29 +57,21 @@ const ContactForm = () => {
   const onSubmit: SubmitHandler<ContactForm> = async (data) => {
     setIsLoading(true);
     try {
-      // Create a new FormData object
-      const formData = new FormData();
-      formData.append("name", data.name);
-      formData.append("email", data.email);
-      formData.append("message", data.message);
-      formData.append("query", data.query);
-      if (data.other) formData.append("other", data.other);
+      const result = await axios.post("/api/contact/send", data);
 
-      // Call the server action with prevState (optional) and formData
-      const result: any = await submitContactForm(null, formData);
-
-      // Handle the response
-      if (!result || result.error) {
-        toast.error("Failed to submit the contact form. Please try again.");
+      if (result.data.success) {
+        toast.success("Contact form submitted successfully!");
+        form.reset(); // Reset the form after successful submission
       } else {
-        toast.success("Contact form saved successfully!");
+        toast.error(
+          result.data.message || "Failed to submit the contact form."
+        );
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Form submission error:", error);
-      toast.error("An error occurred during form submission.");
+      toast.error(error.message);
     } finally {
       setIsLoading(false);
-      form.reset();
     }
   };
 
@@ -120,32 +115,30 @@ const ContactForm = () => {
             control={form.control}
             name="query"
             render={({ field }) => (
-              <>
-                <FormItem className="mb-2">
-                  <FormLabel className="text-white">Select Query</FormLabel>
-                  <Select
-                    onValueChange={(value) => {
-                      field.onChange(value);
-                      setIsShow(value === "other");
-                    }}
-                    defaultValue={field.value}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select Your Query" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>Select Your Query</SelectLabel>
-                        <SelectItem value="developer">
-                          Contact Developer
-                        </SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              </>
+              <FormItem className="mb-2">
+                <FormLabel className="text-white">Select Query</FormLabel>
+                <Select
+                  onValueChange={(value) => {
+                    field.onChange(value);
+                    setIsShow(value === "other");
+                  }}
+                  defaultValue={field.value}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Your Query" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Select Your Query</SelectLabel>
+                      <SelectItem value="developer">
+                        Contact Developer
+                      </SelectItem>
+                      <SelectItem value="other">Other</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
             )}
           />
 
@@ -160,7 +153,7 @@ const ContactForm = () => {
                     <Input
                       {...field}
                       type="text"
-                      placeholder="Write here Your Query"
+                      placeholder="Write your query here"
                     />
                   </FormControl>
                   <FormMessage />

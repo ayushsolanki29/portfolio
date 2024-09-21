@@ -1,15 +1,13 @@
-"use client";
+"use client"
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import LaguageSelect from "./LaguageSelect";
-import { useFormState } from "react-dom";
-import { addProject, EditProject } from "../_actions/Projects";
-import Image from "next/image";
-import { useFormStatus } from "react-dom";
 import RichTextEditor from "../projects/_components/rich-text-editor";
 import { useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const ProjectForm = ({
   project,
@@ -19,63 +17,111 @@ const ProjectForm = ({
   listData: any;
 }) => {
   const [content, setContent] = useState(project?.content || "");
-  const [error, action] = useFormState(
-    project != null ? EditProject.bind(null, project._id) : addProject,
-    {}
-  );
-  console.log(content);
+  const [thumbnail, setThumbnail] = useState<File | null>(null);
+  const [selectedFramworks, setselectedFramworks] = useState([]);
+  const [formData, setFormData] = useState({
+    title: "",
+    slug: "",
+    liveUrl: "",
+    githubUrl: "",
+    description: "",
+    
+  });
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    if (file) {
+      setThumbnail(file);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!thumbnail) {
+      toast.error("No thumbnail image selected");
+      return;
+    }
+
+    // Upload thumbnail to Cloudinary
+    const thumbnailData = new FormData();
+    thumbnailData.append("file", thumbnail);
+
+    try {
+      const uploadRes = await axios.post("/api/upload", thumbnailData);
+      const thumbnailUrl = uploadRes.data.url;
+
+      // Prepare data to send to MongoDB
+      const projectData = {
+        ...formData,
+        content,
+        techStacks: selectedFramworks,
+        thumbnail: thumbnailUrl,
+      };
+
+      // Send project data to MongoDB
+      const response = await axios.post("/api/projects/add", projectData);
+      if (response.data.success) {
+        toast.success(response.data.message);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+      console.error("Error uploading thumbnail or adding project:", error);
+    }
+  };
 
   return (
-    <form action={action} className="space-y-8">
+    <form className="space-y-8" onSubmit={handleSubmit}>
       <div className="space-y-2">
         <Label htmlFor="title">Title</Label>
         <Input
           type="text"
           id="title"
           name="title"
-          defaultValue={project?.title}
           placeholder="Enter Project Title"
+          onChange={handleChange}
         />
-        {error?.title && <div className="text-red-500">{error.title}</div>}
       </div>
       <div className="space-y-2">
-        <Label htmlFor="title">Slug</Label>
+        <Label htmlFor="slug">Slug</Label>
         <Input
           type="text"
           id="slug"
           name="slug"
-          defaultValue={project?.slug}
           placeholder="Enter Project slug for URL"
+          onChange={handleChange}
         />
-        {error?.slug && <div className="text-red-500">{error.slug}</div>}
       </div>
       <div className="space-y-2">
         <div className="flex gap-4">
           <div className="flex-1">
-            <Label htmlFor="live_URL">Live URL</Label>
+            <Label htmlFor="liveUrl">Live URL</Label>
             <Input
               type="text"
-              id="live_URL"
+              id="liveUrl"
               name="liveUrl"
-              defaultValue={project?.liveUrl}
               placeholder="Enter Project Live URL"
+              onChange={handleChange}
             />
-            {error?.liveUrl && (
-              <div className="text-red-500">{error.liveUrl}</div>
-            )}
           </div>
           <div className="flex-1">
-            <Label htmlFor="github_url">Github URL</Label>
+            <Label htmlFor="githubUrl">Github URL</Label>
             <Input
               type="text"
-              id="github_url"
-              defaultValue={project?.githubUrl}
+              id="githubUrl"
               name="githubUrl"
-              placeholder="Enter Project Github URl"
+              placeholder="Enter Project Github URL"
+              onChange={handleChange}
             />
-            {error?.githubUrl && (
-              <div className="text-red-500">{error.githubUrl}</div>
-            )}
           </div>
         </div>
       </div>
@@ -84,67 +130,32 @@ const ProjectForm = ({
         <Textarea
           id="description"
           name="description"
-          defaultValue={project?.description}
           placeholder="Enter Project Short Description"
+          onChange={handleChange}
         />
-        {error?.description && (
-          <div className="text-red-500">{error.description}</div>
-        )}
       </div>
-      {/* warning message  */}
-      {project && (
-        <div className="text-yellow-500">
-          Warning: Please Select Again Tech Stacks
-        </div>
-      )}
-
-      <LaguageSelect listData={listData} />
-      {error?.techStacks && (
-        <div className="text-red-500">{error.techStacks}</div>
-      )}
+      <input type="hidden" name={"techStacks"} value={selectedFramworks} />
+      <LaguageSelect
+        listData={listData}
+        setselectedFramworks={setselectedFramworks}
+      />
       <div className="space-y-2">
         <Label htmlFor="thumbnail">Thumbnail</Label>
-        <Input type="file" id="thumbnail" name="thumbnail" />
-        {error?.thumbnail && (
-          <div className="text-red-500">{error.thumbnail}</div>
-        )}
-        {project && (
-          <div className="flex gap-4">
-            <Image
-              src={project.thumbnail}
-              alt={project.title}
-              width={200}
-              height={150}
-            />
-          </div>
-        )}
+        <Input
+          type="file"
+          id="thumbnail"
+          name="thumbnail"
+          onChange={handleThumbnailChange}
+        />
       </div>
       <div className="space-y-2">
         <Label htmlFor="description">Content</Label>
         <input type="hidden" name="content" value={content} />
-        {error?.content && <div className="text-red-500">{error.content}</div>}
         <RichTextEditor content={content} setContent={setContent} />
       </div>
-      <SubmitButton />
+      <Button type="submit">Save</Button>
     </form>
   );
 };
 
 export default ProjectForm;
-function SubmitButton({ project }: { project?: any | null }) {
-  const { pending } = useFormStatus();
-  {
-    if ( project != null) {
-      return (
-        <Button type="submit" disabled={pending}>
-          {pending ? "Adding..." : "Add Project"}
-        </Button>
-      );
-    }
-    return (
-      <Button type="submit" disabled={pending}>
-        {pending ? "Updating..." : "Update project"}
-      </Button>
-    );
-  }
-}

@@ -1,7 +1,8 @@
-"use client"
+"use client";
 import React from "react";
 import { PinContainer } from "../../../components/ui/3d-pin";
 import { FaLocationArrow } from "react-icons/fa6";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Props {
   link: string;
@@ -63,3 +64,41 @@ const ProjectCard = ({ link, img, title, des, iconLists }: Props) => {
 };
 
 export default ProjectCard;
+export const SkeletonCard = () => {
+  return (
+    <div className="p-4 rounded-lg shadow-lg bg-[#13162D]">
+      {/* Container for image and background */}
+      <div className="relative flex items-center justify-center sm:w-96 w-[80vw] overflow-hidden h-[20vh] lg:h-[30vh] mb-10">
+        <Skeleton className="w-full h-full lg:rounded-3xl" />
+        <Skeleton className="absolute bottom-0 z-10 w-[80px] h-[80px] rounded-full" />
+      </div>
+
+      {/* Title skeleton */}
+      <Skeleton className="h-6 w-3/4 lg:text-1xl md:text-xl text-base mb-2" />
+
+      {/* Description skeleton */}
+      <Skeleton className="h-4 w-full lg:text-xs text-sm mb-4" />
+      <Skeleton className="h-4 w-5/6 lg:text-xs text-sm" />
+
+      {/* Icons row skeleton */}
+      <div className="flex items-center justify-between mt-7 mb-3">
+        <div className="flex items-center">
+          {[...Array(4)].map((_, index) => (
+            <Skeleton
+              key={index}
+              className={`w-8 h-8 rounded-full bg-black border border-white/[.2] flex-shrink-0`}
+              style={{
+                transform: `translateX(-${5 * index + 2}px)`,
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="flex items-center">
+          <Skeleton className="w-16 h-5 mr-2" />
+          <FaLocationArrow className="text-[#CBACF9]" />
+        </div>
+      </div>
+    </div>
+  );
+};

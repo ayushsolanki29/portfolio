@@ -1,4 +1,3 @@
-// app/admin/projects/ProjectsTable.tsx
 "use client";
 import React from "react";
 import {
@@ -21,7 +20,7 @@ import {
 
 const ProjectsTable = ({ projects }: { projects: any[] }) => {
   if (!projects || projects.length === 0) return <p>No Project Found!!</p>;
-  
+
   return (
     <Table>
       <TableHeader>

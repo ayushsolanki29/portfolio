@@ -1,4 +1,5 @@
-import React from "react";
+"use client"
+import React, { useEffect, useState } from "react";
 import PageHeader from "../_components/FileHeader";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -17,47 +18,53 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { MoreVertical } from "lucide-react";
-import Image from "@/models/Image";
-import Project from "@/models/Project";
-// import Image from "next/image";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const ImagesPage = () => {
   return (
-    <div className="container flex flex-col h-screen">
+    <div className="container flex flex-col h-full">
       <div className="flex justify-between">
-        <PageHeader>Realted Images</PageHeader>
+        <PageHeader>Related Images</PageHeader>
         <Link href={"/admin/images/new"}>
           <Button size={"sm"} variant={"default"}>
             Upload New Images
           </Button>
         </Link>
       </div>
-      <div className="mt-8">{<ImagesTable />}</div>
+      <div className="mt-8">
+        <ImagesTable />
+      </div>
     </div>
   );
 };
 
-export default ImagesPage;
-async function ImagesTable() {
-  // Fetch images sorted by creation date
-  const imagesDatabase = await Image.find({}).sort({ createdAt: "desc" });
+const ImagesTable = () => {
+  const [imagesWithProjects, setImagesWithProjects] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Check if there are no images in the database
-  if (imagesDatabase.length === 0) return <p>No Images Found!</p>;
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const response = await axios.get("/api/images/get"); // Adjust the endpoint as needed
+        if (response.data.success) {
+          setImagesWithProjects(response.data.images);
+        } else {
+          toast.error(response.data.message || "Failed to fetch images");
+        }
+      } catch (error) {
+        console.error("Error fetching images:", error);
+        toast.error("Error fetching images");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  // Fetch associated projects and add project title to each image
-  const imagesWithProjects = await Promise.all(
-    imagesDatabase.map(async (image) => {
-      // Fetch the project associated with the image's projectId
-      const project = image.projectId
-        ? await Project.findById(image.projectId)
-        : null;
-      return {
-        ...image.toObject(),
-        projectTitle: project ? project.title : "No Project Found", // Set project title or default text
-      };
-    })
-  );
+    fetchImages();
+  }, []);
+
+  if (loading) return <p>Loading images...</p>;
+  if (imagesWithProjects.length === 0) return <p>No Images Found!</p>;
 
   return (
     <Table>
@@ -106,4 +113,6 @@ async function ImagesTable() {
       </TableBody>
     </Table>
   );
-}
+};
+
+export default ImagesPage;

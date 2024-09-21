@@ -2,7 +2,6 @@ import { FloatingNav } from "@/components/ui/floating-navbar";
 
 import { email, navItems } from "@/data";
 
-import Footer from "@/components/Footer";
 import ContactForm from "./_components/form";
 import ContactInfo from "./_components/ContactInfo";
 const Contact = () => {
@@ -21,7 +20,7 @@ const Contact = () => {
           <a className="text-purple" href={`mailto:${email}`}>
             {email}
           </a>
-          . I'm always here to help!
+          . I&apos;m always here to help!
         </p>
 
         <div className="p-6 max-w-4xl mx-auto rounded-lg shadow-md flex flex-col lg:flex-row gap-8">

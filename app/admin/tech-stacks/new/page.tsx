@@ -8,7 +8,7 @@ const AddNewProject = () => {
       <div className="flex items-center justify-center">
         <PageHeader>Add New Laguage</PageHeader>
       </div>
-      <LanguageForm  />
+      <LanguageForm   />
     </div>
   );
 };

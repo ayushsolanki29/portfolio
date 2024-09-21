@@ -1,6 +1,8 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import PageHeader from "../_components/FileHeader";
 import { Button } from "@/components/ui/button";
+import axios from "axios";
 import {
   Table,
   TableBody,
@@ -15,13 +17,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { CheckCircle2, MoreVertical, XCircle } from "lucide-react";
+import { MoreVertical } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import TechStack from "@/models/TechStack";
+
 const TechStacksPage = () => {
   return (
-    <div className="container flex flex-col h-screen">
+    <div className="container flex flex-col h-full">
       <div className="flex justify-between">
         <PageHeader>Tech Stacks</PageHeader>
         <Link href={"/admin/tech-stacks/new"}>
@@ -39,11 +41,27 @@ const TechStacksPage = () => {
 
 export default TechStacksPage;
 
-async function TechStackTable() {
-  const techStaks = await TechStack.find({})
-    .select({ name: 1, image: 1, role: 1 })
-    .sort({ createdAt: "desc" });
-  if (techStaks.length === 0) return <p>No Laguage Found!!</p>;
+const TechStackTable = () => {
+  const [techStacks, setTechStacks] = useState<any[]>([]); // Define correct type
+
+  useEffect(() => {
+    const fetchTechStacks = async () => {
+      try {
+        const response = await axios.get("/api/tech-stacks/get");
+        if (response.data.success) {
+          setTechStacks(response.data.techStacks);
+        } else {
+          console.error("Error fetching tech stacks:", response.data.message);
+        }
+      } catch (error: any) {
+        console.error("Error fetching tech stacks:", error.message);
+      }
+    };
+
+    fetchTechStacks();
+  }, []);
+
+  if (techStacks.length === 0) return <p>No Language Found!</p>;
 
   return (
     <Table>
@@ -56,7 +74,7 @@ async function TechStackTable() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {techStaks.map((techstack: any) => (
+        {techStacks.map((techstack) => (
           <TableRow key={techstack.id}>
             <TableCell>
               <Link href={`/project/${techstack.id}`}>
@@ -97,4 +115,4 @@ async function TechStackTable() {
       </TableBody>
     </Table>
   );
-}
+};
