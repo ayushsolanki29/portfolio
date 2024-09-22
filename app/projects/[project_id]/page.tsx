@@ -10,6 +10,7 @@ import TechStaks from "../_components/TechStaks";
 import Content from "../_components/content";
 import Buttons from "../_components/Buttons";
 import axios from "axios";
+import { Loader } from "lucide-react";
 
 const ProjectID = ({ params }: { params: { project_id: string } }) => {
   const getParam = params.project_id; // Extract the project_id from params
@@ -40,7 +41,13 @@ const ProjectID = ({ params }: { params: { project_id: string } }) => {
   }, [getParam]); // Dependency on getParam
 
   if (loading) {
-    return <p>Loading...</p>; // Loading state
+    return (
+      <div>
+        <div className="flex items-center justify-center h-screen flex-col w-[80%] mx-auto">
+          <Loader className="animate-spin size-10" />
+        </div>
+      </div>
+    );
   }
 
   if (error) {

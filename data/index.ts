@@ -245,7 +245,7 @@ const skills = [
     description: `Web Development involves creating websites and web applications that are both visually appealing and highly functional. It encompasses a variety of technologies, frameworks, and best practices to ensure a seamless user experience and efficient performance.`,
   },
   {
-    name: "UI/UX Design",
+    name: "Ghraphic Design",
     Icon: LayoutIcon,
     description: `UI/UX Design focuses on creating delightful user experiences through visually appealing and highly functional designs. This skill includes a variety of technologies, frameworks, and best practices to enhance user satisfaction and usability.`,
   },
@@ -255,9 +255,9 @@ const skills = [
     description: `Database Management involves efficiently storing and organizing data. This skill covers a range of technologies, frameworks, and best practices to ensure data integrity, security, and performance.`,
   },
   {
-    name: "Mobile Development",
+    name: "Backend Development",
     Icon: SmartphoneIcon,
-    description: `Mobile Development entails crafting apps for smartphones and tablets that are both visually appealing and highly functional. It includes a variety of technologies, frameworks, and best practices to provide a seamless user experience on mobile devices.`,
+    description: `Backend Development entails crafting apps for smartphones and tablets that are both visually appealing and highly functional. It includes a variety of technologies, frameworks, and best practices to provide a seamless user experience on mobile devices.`,
   },
 ];
 
