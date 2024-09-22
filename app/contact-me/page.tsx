@@ -4,6 +4,7 @@ import { email, navItems } from "@/data";
 
 import ContactForm from "./_components/form";
 import ContactInfo from "./_components/ContactInfo";
+import Footer from "@/components/Footer";
 const Contact = () => {
   return (
     <div>
@@ -33,6 +34,7 @@ const Contact = () => {
           </div>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 };

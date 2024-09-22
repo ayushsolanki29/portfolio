@@ -4,6 +4,7 @@ import { CgCode } from "react-icons/cg";
 import ProjectCard, { SkeletonCard } from "./ProjectCard";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 interface RecentProjectsProps {
   title: string;
@@ -37,7 +38,7 @@ const RecentProjects = ({ title, boldText }: RecentProjectsProps) => {
   if (loading) 
     return (
       <div className="flex flex-wrap items-center justify-center p-4 gap-x-24 gap-y-8 mt-10">
-        {Array.from({ length: 6 }).map((_, index) => (
+        {Array.from({ length: 4 }).map((_, index) => (
           <SkeletonCard key={index} />
         ))}
       </div>
@@ -67,12 +68,14 @@ const RecentProjects = ({ title, boldText }: RecentProjectsProps) => {
         ))}
       </div>
       <div className="text-center">
+        <Link href={"/projects"}>
         <MagicButton
           title="Want to see more?"
           position="left"
           otherClasses="text-center w-full"
           icon={<CgCode className="size-5" />}
-        />
+          />
+          </Link>
       </div>
     </div>
   );

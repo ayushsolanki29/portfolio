@@ -17,7 +17,7 @@ const ContactInfo = () => {
         <p className="text-sm text-gray-400 mb-2">Socials</p>
         <div className="flex flex-col gap-2">
           <a
-            href="#"
+            href="https://github.com/ayushsolanki29"
             target="_blank"
             className="flex items-center gap-2 text-white hover:underline"
           >
@@ -25,7 +25,7 @@ const ContactInfo = () => {
             Github
           </a>
           <a
-            href="#"
+            href="https://instagram.com/ayushsolanki.exe"
             target="_blank"
             className="flex items-center gap-2 text-white hover:underline"
           >

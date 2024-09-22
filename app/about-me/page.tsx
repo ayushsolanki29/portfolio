@@ -33,12 +33,12 @@ const About = () => {
                   </p>
                   <div className="flex gap-2">
                     <Button asChild variant={"outline"}>
-                      <a href="resume.pdf" target="_blank">
+                      <a href="/resume.pdf" target="_blank">
                         View Resume <ArrowUpRightIcon className="ml-2 size-5" />
                       </a>
                     </Button>
                     <Button asChild>
-                      <Link href="/about">Learn More</Link>
+                      <Link href="/projects">See my Work</Link>
                     </Button>
                   </div>
                 </div>

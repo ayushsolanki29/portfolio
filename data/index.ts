@@ -50,10 +50,10 @@ export const gridItems = [
 
   {
     id: 5,
-    title: "Currently building a JS Animation library",
-    description: "The Inside Scoop",
+    title: "I am Good at Backend Development.",
+    description: "PHP | NODE JS | NEXT JS | MERN",
     className: "md:col-span-3 md:row-span-2",
-    imgClassName: "absolute right-0 bottom-0 md:w-96 w-60",
+    imgClassName: "absolute right-0 bottom-0 md:w-96 w-96",
     titleClassName: "justify-center md:justify-start lg:justify-center",
     img: "/b5.svg",
     spareImg: "/grid.svg",
@@ -70,11 +70,11 @@ export const gridItems = [
   },
   {
     id: 7,
-    tile: "Do you want to start a project together?",
+    tile: "",
     description: "",
     className: "lg:col-span-5 md:col-span-3 md:row-span-1",
     imgClassName: "",
-    titleClassName: "justify-center md:max-w-full max-w-60 text-center",
+    titleClassName: "justify-center max-w-full  text-center",
     img: "",
     spareImg: "",
   },
@@ -233,32 +233,32 @@ import {
   CodeIcon,
   DatabaseIcon,
   LayoutIcon,
-  SmartphoneIcon
-} from 'lucide-react';
+  SmartphoneIcon,
+} from "lucide-react";
 
 const trimLen: number = -1; // 0 is accordion only, -1 is does not restrict the length
 
 const skills = [
   {
-    name: 'Web Development',
+    name: "Web Development",
     Icon: CodeIcon,
-    description: `Web Development involves creating websites and web applications that are both visually appealing and highly functional. It encompasses a variety of technologies, frameworks, and best practices to ensure a seamless user experience and efficient performance.`
+    description: `Web Development involves creating websites and web applications that are both visually appealing and highly functional. It encompasses a variety of technologies, frameworks, and best practices to ensure a seamless user experience and efficient performance.`,
   },
   {
-    name: 'UI/UX Design',
+    name: "UI/UX Design",
     Icon: LayoutIcon,
-    description: `UI/UX Design focuses on creating delightful user experiences through visually appealing and highly functional designs. This skill includes a variety of technologies, frameworks, and best practices to enhance user satisfaction and usability.`
+    description: `UI/UX Design focuses on creating delightful user experiences through visually appealing and highly functional designs. This skill includes a variety of technologies, frameworks, and best practices to enhance user satisfaction and usability.`,
   },
   {
-    name: 'Database Management',
+    name: "Database Management",
     Icon: DatabaseIcon,
-    description: `Database Management involves efficiently storing and organizing data. This skill covers a range of technologies, frameworks, and best practices to ensure data integrity, security, and performance.`
+    description: `Database Management involves efficiently storing and organizing data. This skill covers a range of technologies, frameworks, and best practices to ensure data integrity, security, and performance.`,
   },
   {
-    name: 'Mobile Development',
+    name: "Mobile Development",
     Icon: SmartphoneIcon,
-    description: `Mobile Development entails crafting apps for smartphones and tablets that are both visually appealing and highly functional. It includes a variety of technologies, frameworks, and best practices to provide a seamless user experience on mobile devices.`
-  }
+    description: `Mobile Development entails crafting apps for smartphones and tablets that are both visually appealing and highly functional. It includes a variety of technologies, frameworks, and best practices to provide a seamless user experience on mobile devices.`,
+  },
 ];
 
 export { trimLen, skills };
