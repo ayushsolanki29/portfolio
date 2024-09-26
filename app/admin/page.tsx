@@ -16,6 +16,7 @@ const Dashboard = () => {
     projectCount: 0,
     techStacksCount: 0,
     imagesCount: 0,
+    contacts: 0,
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -31,6 +32,7 @@ const Dashboard = () => {
             projectCount: response.data.stats.projects || 0,
             techStacksCount: response.data.stats.techStacks || 0,
             imagesCount: response.data.stats.images || 0,
+            contacts: response.data.stats.contacts || 0,
           });
         } else {
           throw new Error(response.data.message);
@@ -54,18 +56,23 @@ const Dashboard = () => {
       <div className="items-center mt-10 mx-24 max-w-full justify-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
         <DashboardCard
           title="Projects"
-          body={"000 Found"}
-          subtitle={`${formatNumber(stats.projectCount)} Projects`}
+          subtitle={""}
+          body={`${formatNumber(stats.projectCount)} Projects`}
         />
         <DashboardCard
           title="Images"
-          subtitle={`${formatNumber(stats.imagesCount)} Images`}
-          body={"000 Found"}
+          body={`${formatNumber(stats.imagesCount)} Images`}
+          subtitle={""}
         />
         <DashboardCard
           title="Tech Stacks"
-          body={"000 Found"}
-          subtitle={`${formatNumber(stats.techStacksCount)} Languages`}
+          subtitle={""}
+          body={`${formatNumber(stats.techStacksCount)} Languages`}
+        />
+        <DashboardCard
+          title="Contact Submissions"
+          subtitle={""}
+          body={`${formatNumber(stats.contacts)} Submissions`}
         />
       </div>
     </div>

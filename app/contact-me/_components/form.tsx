@@ -129,11 +129,15 @@ const ContactForm = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectLabel>Select Your Query</SelectLabel>
-                      <SelectItem value="developer">
-                        Contact Developer
-                      </SelectItem>
-                      <SelectItem value="other">Other</SelectItem>
+                    <SelectItem value="Project Inquiry">Project Inquiry</SelectItem>
+<SelectItem value="Contact Developer">Contact Developer</SelectItem>
+<SelectItem value="Hire Me">Hire Me</SelectItem>
+<SelectItem value="Collaborate on a Project">Collaborate on a Project</SelectItem>
+<SelectItem value="Request a Quote">Request a Quote</SelectItem>
+<SelectItem value="Feedback or Suggestions">Feedback or Suggestions</SelectItem>
+<SelectItem value="Support or Issue">Support or Issue</SelectItem>
+<SelectItem value="other">Other</SelectItem>
+
                     </SelectGroup>
                   </SelectContent>
                 </Select>

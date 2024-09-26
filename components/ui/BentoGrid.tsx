@@ -139,17 +139,7 @@ export const BentoGridItem = ({
             </div>
           )}
           {id === 6 && <CopyEmail />}
-          {id === 7 && (
-            <div className="">
-              <div className="absolute z-50 inset-0 flex items-center justify-center text-white font-bold px-4 pointer-events-none text-3xl text-center md:text-4xl lg:text-7xl"></div>
-              <div className="">
-                <h1 className="text-1xl md:text-2xl lg:text-4xl font-semibold max-w-7xl mx-auto text-center relative z-20 py-6 bg-clip-text text-transparent bg-gradient-to-b from-neutral-800 via-neutral-700 to-neutral-700 dark:from-neutral-800 dark:via-white dark:to-white">
-                  Crafting Your Vision at <br />
-                  the <Cover>Speed of Light</Cover>
-                </h1>
-              </div>
-            </div>
-          )}
+        
         </div>
       </div>
     </div>

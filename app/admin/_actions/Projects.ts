@@ -87,7 +87,7 @@ export async function EditProject(
   if (result.success === false) {
     return result.error.formErrors.fieldErrors;
   }
-  
+
   const data = result.data;
 
   // Find the project by id

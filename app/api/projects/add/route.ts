@@ -1,5 +1,6 @@
 import { connectToDatabase } from "@/lib/db";
 import Project from "@/models/Project";
+import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   await connectToDatabase();
@@ -14,27 +15,37 @@ export async function POST(request: Request) {
     techStacks,
     thumbnail,
   } = await request.json();
+  console.log(
+    "Received project data:",
+    title,
+    description,
+  "content :" ,  content,
+    slug,
+    githubUrl,
+    liveUrl,
+    techStacks,
+    "thumb :",
+    thumbnail
+  );
 
   try {
-    const addProject = await Project.create({
+    await Project.create({
       title,
       description,
-      thumbnail,
       content,
       slug,
       githubUrl,
       liveUrl,
       techStacks,
+      thumbnail, // Now receiving the image URL directly
     });
 
-    await addProject.save();
-
-    return Response.json({
+    return NextResponse.json({
       success: true,
       message: "Project added successfully",
     });
   } catch (error: any) {
-    console.error(`Error adding project: ${error.message}`);
-    return Response.json({ success: false, message: error.message });
+    console.error(`Error adding project: ${error}`);
+    return NextResponse.json({ success: false, message: error.message });
   }
 }

@@ -68,16 +68,6 @@ export const gridItems = [
     img: "",
     spareImg: "",
   },
-  {
-    id: 7,
-    tile: "",
-    description: "",
-    className: "lg:col-span-5 md:col-span-3 md:row-span-1",
-    imgClassName: "",
-    titleClassName: "justify-center max-w-full  text-center",
-    img: "",
-    spareImg: "",
-  },
 ];
 
 export const projects = [
@@ -184,32 +174,18 @@ export const companies = [
 export const workExperience = [
   {
     id: 1,
-    title: "Freelancer",
-    desc: "Assisted in the development of a web-based platform using React.js, enhancing interactivity.",
+    title: "Freelance Web Developer",
+    desc: "Over two years of experience as a freelance web developer, building dynamic, responsive websites and applications. Developed full-stack solutions using modern frameworks such as React.js, Next.js, and PHP. Delivered high-impact projects like mypoetry.in, an engaging online poetry platform, and steam-games.in, an e-commerce site offering discounted games.",
     className: "md:col-span-2",
     thumbnail: "/exp1.svg",
   },
-  // {
-  //   id: 2,
-  //   title: "Mobile App Dev - JSM Tech",
-  //   desc: "Designed and developed mobile app for both iOS & Android platforms using React Native.",
-  //   className: "md:col-span-2", // change to md:col-span-2
-  //   thumbnail: "/exp2.svg",
-  // },
   {
-    id: 3,
-    title: "Freelance App Dev Project",
-    desc: "Led the dev of a mobile app for a client, from initial concept to deployment on app stores.",
-    className: "md:col-span-2", // change to md:col-span-2
-    thumbnail: "/exp3.svg",
+    id: 2,
+    title: "Freelance Full-Stack Developer",
+    desc: "Led and developed large-scale projects such as esportsmanagement.app, an advanced platform for managing esports teams and events. Specialized in back-end technologies including Node.js and MySQL, ensuring seamless user experiences with optimized performance and security. Managed end-to-end project lifecycle, from concept to deployment.",
+    className: "md:col-span-2",
+    thumbnail: "/exp2.svg",
   },
-  // {
-  //   id: 4,
-  //   title: "Lead Frontend Developer",
-  //   desc: "Developed and maintained user-facing features using modern frontend technologies.",
-  //   className: "md:col-span-2",
-  //   thumbnail: "/exp4.svg",
-  // },
 ];
 
 export const socialMedia = [
@@ -226,38 +202,49 @@ export const socialMedia = [
   {
     id: 3,
     img: "/link.svg",
-    href: "https://www.linkedin.com/in/ayush-solanki-29/",
+    href: "https://www.linkedin.com/in/ayush-solanki-a3909625a",
+  },
+  {
+    id: 3,
+    img: "/insta.svg",
+    href: "https://instagram.com/ayushsolanki.exe",
   },
 ];
 import {
   CodeIcon,
   DatabaseIcon,
-  LayoutIcon,
-  SmartphoneIcon,
+  GitBranchIcon,
+  ServerCog,
+  ServerIcon,
 } from "lucide-react";
 
 const trimLen: number = -1; // 0 is accordion only, -1 is does not restrict the length
 
 const skills = [
   {
-    name: "Web Development",
-    Icon: CodeIcon,
-    description: `Web Development involves creating websites and web applications that are both visually appealing and highly functional. It encompasses a variety of technologies, frameworks, and best practices to ensure a seamless user experience and efficient performance.`,
-  },
-  {
-    name: "Ghraphic Design",
-    Icon: LayoutIcon,
-    description: `UI/UX Design focuses on creating delightful user experiences through visually appealing and highly functional designs. This skill includes a variety of technologies, frameworks, and best practices to enhance user satisfaction and usability.`,
+    name: "Backend Development",
+    Icon: ServerIcon,
+    description: `Backend Development focuses on building robust and scalable server-side applications. I specialize in PHP, Node.js, and Next.js to create secure APIs, manage databases, and handle server-side logic efficiently. My experience ensures optimal performance, security, and smooth communication between front-end and back-end systems.`,
   },
   {
     name: "Database Management",
     Icon: DatabaseIcon,
-    description: `Database Management involves efficiently storing and organizing data. This skill covers a range of technologies, frameworks, and best practices to ensure data integrity, security, and performance.`,
+    description: `I have expertise in managing relational and non-relational databases such as MySQL and MongoDB. I focus on ensuring data integrity, optimizing queries, and providing secure, efficient storage solutions that scale with user needs.`,
   },
   {
-    name: "Backend Development",
-    Icon: SmartphoneIcon,
-    description: `Backend Development entails crafting apps for smartphones and tablets that are both visually appealing and highly functional. It includes a variety of technologies, frameworks, and best practices to provide a seamless user experience on mobile devices.`,
+    name: "Web Development",
+    Icon: CodeIcon,
+    description: `With a strong foundation in full-stack development, I create web applications that are both visually appealing and highly functional. Leveraging technologies like JavaScript, React, and Express, I build seamless front-end and back-end interactions for a dynamic user experience.`,
+  },
+  {
+    name: "API Development",
+    Icon: ServerCog,
+    description: `API Development is a critical part of modern web applications, and I specialize in building RESTful and GraphQL APIs. I ensure secure, scalable communication between clients and servers, focusing on performance and ease of integration for third-party services.`,
+  },
+  {
+    name: "Version Control & CI/CD",
+    Icon: GitBranchIcon,
+    description: `Proficient in Git, GitHub, and version control practices, I ensure smooth team collaboration and project tracking. I also implement CI/CD pipelines for automated testing, deployment, and continuous integration to streamline the development process.`,
   },
 ];
 

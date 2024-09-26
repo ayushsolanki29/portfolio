@@ -18,7 +18,6 @@ const LaguageSelect = ({
   frameworksList = listData.map((item: any) => ({
     label: item.name,
     value: item._id,
-
   }));
 
   return (

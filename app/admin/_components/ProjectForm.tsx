@@ -1,11 +1,11 @@
-"use client"
+"use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import LaguageSelect from "./LaguageSelect";
 import RichTextEditor from "../projects/_components/rich-text-editor";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -17,16 +17,32 @@ const ProjectForm = ({
   listData: any;
 }) => {
   const [content, setContent] = useState(project?.content || "");
+  const [isLoading, setIsLoading] = useState(false); // Loader state
   const [thumbnail, setThumbnail] = useState<File | null>(null);
-  const [selectedFramworks, setselectedFramworks] = useState([]);
+  const [selectedFramworks, setselectedFramworks] = useState(
+    project?.techStacks || []
+  );
   const [formData, setFormData] = useState({
-    title: "",
-    slug: "",
-    liveUrl: "",
-    githubUrl: "",
-    description: "",
-    
+    title: project?.title || "",
+    slug: project?.slug || "",
+    liveUrl: project?.liveUrl || "",
+    githubUrl: project?.githubUrl || "",
+    description: project?.description || "",
   });
+
+  useEffect(() => {
+    if (project) {
+      setFormData({
+        title: project.title,
+        slug: project.slug,
+        liveUrl: project.liveUrl,
+        githubUrl: project.githubUrl,
+        description: project.description,
+      });
+      setContent(project.content);
+      setselectedFramworks(project.techStacks);
+    }
+  }, [project]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -50,24 +66,28 @@ const ProjectForm = ({
       return;
     }
 
-    // Upload thumbnail to Cloudinary
-    const thumbnailData = new FormData();
-    thumbnailData.append("file", thumbnail);
+    setIsLoading(true);
 
     try {
-      const uploadRes = await axios.post("/api/upload", thumbnailData);
-      const thumbnailUrl = uploadRes.data.url;
+      // Upload thumbnail to Cloudinary (or another storage service)
+      const thumbnailData = new FormData();
+      thumbnailData.append("thumbnail", thumbnail);
 
-      // Prepare data to send to MongoDB
+      const uploadRes = await axios.post("/api/upload-image", thumbnailData);
+      const thumbnailUrl = uploadRes.data.imageUrl;
+      console.log(thumbnailUrl);
+      
+      // Prepare project data to send to the API
       const projectData = {
         ...formData,
         content,
         techStacks: selectedFramworks,
-        thumbnail: thumbnailUrl,
+        thumbnail: thumbnailUrl, // Store the Cloudinary URL
       };
 
-      // Send project data to MongoDB
+      // Send the project data to MongoDB
       const response = await axios.post("/api/projects/add", projectData);
+
       if (response.data.success) {
         toast.success(response.data.message);
       } else {
@@ -76,6 +96,8 @@ const ProjectForm = ({
     } catch (error: any) {
       toast.error(error.message);
       console.error("Error uploading thumbnail or adding project:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -88,6 +110,7 @@ const ProjectForm = ({
           id="title"
           name="title"
           placeholder="Enter Project Title"
+          value={formData.title}
           onChange={handleChange}
         />
       </div>
@@ -98,6 +121,7 @@ const ProjectForm = ({
           id="slug"
           name="slug"
           placeholder="Enter Project slug for URL"
+          value={formData.slug}
           onChange={handleChange}
         />
       </div>
@@ -110,6 +134,7 @@ const ProjectForm = ({
               id="liveUrl"
               name="liveUrl"
               placeholder="Enter Project Live URL"
+              value={formData.liveUrl}
               onChange={handleChange}
             />
           </div>
@@ -120,6 +145,7 @@ const ProjectForm = ({
               id="githubUrl"
               name="githubUrl"
               placeholder="Enter Project Github URL"
+              value={formData.githubUrl}
               onChange={handleChange}
             />
           </div>
@@ -131,10 +157,11 @@ const ProjectForm = ({
           id="description"
           name="description"
           placeholder="Enter Project Short Description"
+          value={formData.description}
           onChange={handleChange}
         />
       </div>
-      <input type="hidden" name={"techStacks"} value={selectedFramworks} />
+      <input type="hidden" name="techStacks" value={selectedFramworks} />
       <LaguageSelect
         listData={listData}
         setselectedFramworks={setselectedFramworks}
@@ -153,7 +180,9 @@ const ProjectForm = ({
         <input type="hidden" name="content" value={content} />
         <RichTextEditor content={content} setContent={setContent} />
       </div>
-      <Button type="submit">Save</Button>
+      <Button type="submit" disabled={isLoading}>
+        {isLoading ? "Saving..." : "Save"}
+      </Button>
     </form>
   );
 };

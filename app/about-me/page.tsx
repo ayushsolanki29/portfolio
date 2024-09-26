@@ -26,11 +26,18 @@ const About = () => {
                 </h2>
                 <div className="space-y-4">
                   <p className="max-w-[700px] text-gray-500 dark:text-gray-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                    I am a passionate and creative Web Developer with a love for
-                    beautiful and functional websites. I have experience working
-                    with a variety of web technologies and frameworks and I am
-                    always eager to learn new things and take on new challenges.
+                    I’m Ayush Solanki, a passionate Backend Developer with over
+                    two years of experience in full-stack development. Currently
+                    pursuing a Master's in MCA at Gujarat Technical University,
+                    I previously completed my Bachelor's in BCA from Gujarat
+                    University. I specialize in creating scalable, efficient web
+                    applications using modern technologies like PHP, Node.js,
+                    and Next.js. With a strong focus on backend development, I
+                    thrive on learning new tools and frameworks to solve complex
+                    challenges. As a freelancer, I’m dedicated to delivering
+                    secure, dynamic solutions tailored to client needs.
                   </p>
+
                   <div className="flex gap-2">
                     <Button asChild variant={"outline"}>
                       <a href="/resume.pdf" target="_blank">
@@ -57,17 +64,17 @@ const About = () => {
         </div>
         <div className="w-full py-24 lg:py-32" id="skills">
           <div className="space-y-4 px-4 md:px-6 lg:space-y-10">
-            <div className="flex w-full flex-col items-center justify-center text-center lg:flex-row lg:justify-between lg:text-left">
-              <div className="flex flex-col items-center lg:items-start">
-                <h2 className="heading">
-                  My <span className="text-purple">Skills</span>
-                </h2>
-              </div>
-              <p className="mt-4 hidden text-gray-500 dark:text-gray-400 lg:mt-0 lg:block lg:w-[50%]">
-                Here are some of my skills where I&apos;ve turned knowledge into
-                expertise, making things happen.
-              </p>
-            </div>
+          <div className="flex w-full flex-col items-center justify-center text-center lg:flex-row lg:justify-between lg:text-left">
+  <div className="flex flex-col items-center lg:items-start">
+    <h2 className="heading">
+    My  <span className="text-purple"> Expertise</span>
+    </h2>
+  </div>
+  <p className="mt-4 hidden text-gray-500 dark:text-gray-400 lg:mt-0 lg:block lg:w-[50%]">
+    Below are the core skills I have mastered, enabling me to build efficient, scalable, and impactful solutions.
+  </p>
+</div>
+
             <div className="mt-6">
               <Accordion type="single" collapsible className="w-full space-y-4">
                 {skills.map((skill: any, index: number) => (
