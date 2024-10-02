@@ -74,6 +74,7 @@ const ProjectID = ({ params }: { params: { project_id: string } }) => {
         <div>
           <Content text={project.content} />
           <div className="my-6 w-full overflow-y-auto">
+            <h2 className="mt-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">Tech Stacks</h2>
             <TechStaks items={project.techStacks} />
           </div>
           <div>

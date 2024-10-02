@@ -19,8 +19,15 @@ const ProjectImages = ({ images }: { images: any }) => {
     >
       <CarouselContent>
         {images.map((image: any, index: number) => (
-          <CarouselItem key={index} className="flex items-center justify-center">
-            <img  src={image.imageUrl} alt={image.imageUrl} />
+          <CarouselItem
+            key={index}
+            className="flex items-center bg-purple-300 justify-center"
+          >
+            <img
+              src={image.imageUrl}
+              className="object-scale-down h-96 w-auto"
+              alt={image.imageUrl}
+            />
           </CarouselItem>
         ))}
       </CarouselContent>
