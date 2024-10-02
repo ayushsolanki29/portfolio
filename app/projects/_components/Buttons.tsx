@@ -32,7 +32,7 @@ const Buttons = ({ project }: any) => {
         </Button>
       )}
 
-      <Button className="flex gap-2 items-center" size="sm">
+      <Button className="flex gap-2 items-center" size="sm" onClick={() => { alert("currently not Working This Feature :(")}}>
         <FaHeadset />
         Feedback
       </Button>
